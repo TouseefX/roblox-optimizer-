@@ -1,36 +1,44 @@
-# TABI-x-DEV-rbopt
+# Optimizer by Tabi — Android project
 
-An Android-based Roblox optimization tool developed by **tabiXcheat** (**TABI.dev**). This project optimizes Roblox performance on mobile devices and can be compiled into an Android APK using Android Studio.
+This is a complete Android Studio project implementing the flow you asked for:
 
----
+1. **Splash screen** — plays your video full-screen, with "Optimizer by Tabi" underneath.
+2. **Optimization screen** — runs safe, on-device housekeeping (see note below) with a status log.
+3. **Launch screen** — plays your video again, with "Launching Roblox…" underneath, then opens Roblox automatically. If Roblox isn't installed, it opens the Play Store listing instead.
 
-## 📌 Overview
+Your logo (`1000003557.png`) has been turned into the app icon at every required density (`mipmap-mdpi` through `mipmap-xxxhdpi`), and your video is bundled at `app/src/main/res/raw/intro_video.mp4`.
 
-**TABI-x-DEV-rbopt** is designed to reduce lag, optimize memory, and improve FPS while playing Roblox on Android devices. Whether you want to build the APK yourself or inspect the optimization scripts, this project provides a customizable setup for Android development.
+## Important: what "optimization" actually means here
 
----
+A normal Android app — one that isn't rooting the device or modifying Roblox's own APK — physically cannot reach into Roblox's process, change its render settings, or touch its memory. So this app doesn't pretend to. Per what you asked (no cheats, no memory injection), the optimization step does real, legitimate things only:
 
-## ✨ Features
+- clears this app's own cache
+- asks the system to free up memory
+- reads and displays free RAM
+- reads and displays free storage
+- checks whether you're on Wi-Fi or mobile data
 
-* **Roblox FPS Boost:** Tweaks system and render settings for smoother performance.
-* **Memory Management:** Reduces RAM usage during active gameplay.
-* **Lag Reduction:** Optimizes background processes and frame rates.
-* **Built for Android:** Easily open, build, and package as a ready-to-install `.apk` file.
+That's the honest ceiling for any non-root third-party app. Most "game booster" apps on the Play Store do exactly this and little more — I didn't want to build you something that quietly does nothing while claiming otherwise.
 
----
+## Building the APK — no PC needed
 
-## 🛠️ Prerequisites
+This project includes `.github/workflows/build-apk.yml`, a GitHub Actions workflow. Once this project is pushed to a GitHub repo, GitHub's own cloud servers (which already have the Android SDK installed) will compile the APK for you automatically — you never touch a build tool yourself.
 
-Before getting started, make sure you have:
+1. Push/upload this project to a GitHub repository (any way you like — via the API, via the mobile web uploader, or from a computer if you ever get access to one).
+2. Go to the repo's **Actions** tab → the "Build APK" workflow will already have run (or tap **Run workflow** to trigger it).
+3. Once it finishes (green check, a couple of minutes), open that run → scroll to **Artifacts** → download `optimizer-by-tabi-debug-apk`. That's a zip containing `app-debug.apk`.
+4. Unzip it on your phone (Files app or any zip app) and tap the `.apk` to install (you'll need to allow "install unknown apps" for whichever app you used to open it).
 
-* **Android Studio** (Electric Eel or newer recommended)
-* **Java Development Kit (JDK 11+)**
-* An **Android Device** (Android 8.0 or higher) or an emulator for testing
+## Building the APK — with a PC (if you ever have access to one)
 
----
+1. Install [Android Studio](https://developer.android.com/studio) (free).
+2. Open Android Studio → **Open** → select this project folder.
+3. Let Gradle sync (it'll fetch the Android build tools automatically the first time — this needs internet access).
+4. **Build → Build Bundle(s) / APK(s) → Build APK(s)**.
+5. Your APK will be at `app/build/outputs/apk/debug/app-debug.apk`.
 
-## 🚀 How to Build the APK in Android Studio
+To make a signed release APK instead of a debug one, use **Build → Generate Signed Bundle / APK** and follow the prompts to create a keystore.
 
-1. **Clone or Download the Repository**
-   ```bash
-   git clone [https://github.com/your-username/TABI-x-DEV-rbopt.git](https://github.com/your-username/TABI-x-DEV-rbopt.git)
+## One naming note
+
+The app is named "Optimizer by Tabi" rather than putting "Roblox" in the app's own title/branding. Roblox Corporation owns that trademark, and naming or branding a third-party app as if it were official/affiliated is a common reason such apps get pulled from the Play Store. The app still targets and launches Roblox by package name (`com.roblox.client`) — that part works exactly as you described — this is just about the app's own name and listing if you ever publish it.
