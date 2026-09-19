@@ -42,8 +42,11 @@ jobs:
       - name: Set up Gradle build cache
         uses: gradle/actions/setup-gradle@v4
 
+      # Uploading a project through GitHub's web UI can strip gradlew's executable bit.
       - name: Assemble debug APK
-        run: ./gradlew --no-daemon --stacktrace assembleDebug
+        run: |
+          chmod +x ./gradlew
+          ./gradlew --no-daemon --stacktrace assembleDebug
 
       - name: Upload debug APK
         uses: actions/upload-artifact@v4
